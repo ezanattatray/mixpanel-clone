@@ -1,0 +1,31 @@
+CREATE DATABASE mixpanel;
+
+use mixpanel;
+
+CREATE TABLE users (
+id INT NOT NULL AUTO_INCREMENT,
+api_key VARCHAR(32) NOT NULL,
+email VARCHAR(32) NOT NULL,
+password VARCHAR(40) NOT NULL,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE events (
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL REFERENCES users(id),
+name VARCHAR(32) NOT NULL,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE properties (
+id INT NOT NULL AUTO_INCREMENT,
+event_id INT NOT NULL REFERENCES events(id),
+name VARCHAR(32) NOT NULL,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE property_values (
+property_id INT NOT NULL REFERENCES properties(id),
+text VARCHAR(32) NOT NULL,
+time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

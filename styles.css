@@ -1,0 +1,47 @@
+body {
+    background: url("images/bg.png") repeat;
+}
+
+.box {
+    background:#eee;
+    border:1px solid black;
+    padding:10px;
+    width:720px;
+    margin:0 auto;
+}
+
+.error {
+    background:#fff;
+    border:1px dotted red;
+    padding:2px;
+}
+
+.success {
+    background:#fff;
+    border:1px dotted green;
+    padding:2px;
+}
+
+.header {
+    background:#eee;
+    border:1px solid black;
+    padding:10px;
+    float:right;
+}
+
+.horiz li {
+    display:inline;
+    list-style:none;
+}
+
+.links {
+    list-style:none;
+}
+
+label {
+    display:block;
+}
+
+.clear {
+    clear:both;
+}
