@@ -25,7 +25,12 @@ PRIMARY KEY (id)
 );
 
 CREATE TABLE property_values (
-property_id INT NOT NULL REFERENCES properties(id),
+id INT NOT NULL AUTO_INCREMENT,
 text VARCHAR(32) NOT NULL,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE property_values_ts (
+value_id INT NOT NULL REFERENCES property_values(id),
 time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
