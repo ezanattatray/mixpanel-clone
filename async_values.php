@@ -15,27 +15,20 @@ if($property->load($property_id) == False) {
   exit();
 }
 
-$property->get_values();
+$offset = isset($_GET['o']) ? $_GET['o'] : 0;
 
-$count = Array(); 
+$property->get_values($offset);
 
-$times = Array(); // assoc array to keep track of junk
+$last_text = isset($_GET['l']) ? $_GET['l'] : null;
 
 while(($value = $property->next_value()) != NULL) {
-  if(!is_array($times[$value->text]))
-    $times[$value->text] = Array();
-  array_push($times[$value->text], $value->timestamp);
-}
-
-foreach($times as $text => $ary) {
-  $line = "";
-  $line .= "$text,";
-  foreach($ary as $time) {
-    $line .= "$time,";
+  if($last_text != $value->text) {
+    echo "\n" . $value->text;
   }
 
-  echo substr($line, 0, -1); // trim last comma
-  echo "\n";
+  echo ",".$value->timestamp;
+
+  $last_text = $value->text;
 }
 
 ?>
