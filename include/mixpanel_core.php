@@ -1,6 +1,7 @@
 <?
 require_once("include/sql.php");
 require_once("include/util.php");
+require_once("include/config.php");
 
 class mixpanel_user {
   var $sql, $id, $api_key, $email, $password;
@@ -235,7 +236,7 @@ class mixpanel_property
 
   public function get_values()
   {
-    $this->sql->sql_query("SELECT time, text FROM property_values WHERE property_id = " . $this->sql->sanitize($this->id, 1));
+    $this->sql->sql_query("SELECT t1.text, t2.time FROM property_values AS t1 JOIN property_values_ts AS t2 ON t1.id = t2.value_id WHERE property_id = " . $this->sql->sanitize($this->id) . " ORDER BY t2.time");
   }
 
   public function next_value()
@@ -262,11 +263,22 @@ class mixpanel_value
 
   function create($property, $text)
   {
-    $this->sql->sql_insert("INSERT INTO property_values (property_id, text) VALUES (" . $property->id . ", '" . $this->sql->sanitize($text) . "')");
+    $value = $this->sql->query_row("SELECT id FROM property_values WHERE property_id = " . $this->sql->sanitize($property->id, 1) . " AND text = '" . $this->sql->sanitize($text) . "'");
+    if($this->sql->rows > 0) {
+      $this->id = $value['id'];
+    } else {
+      $this->sql->sql_insert("INSERT INTO property_values (property_id, text) VALUES (" . $property->id . ", '" . $this->sql->sanitize($text) . "')");
+      if($this->sql->a_rows == 1) {
+	$this->id = $this->sql->a_id;
+	$this->property_id = $property->id;
+	$this->text = $text;
+      } else {
+	return False;
+      }
+    }
+
+    $this->sql->sql_insert("INSERT INTO property_values_ts (value_id) VALUES (".$this->sql->sanitize($this->id, 1).")");
     if($this->sql->a_rows == 1) {
-      $this->id = $this->sql->a_id;
-      $this->property_id = $property->id;
-      $this->text = $text;
       return True;
     } else {
       return False;
