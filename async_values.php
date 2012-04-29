@@ -15,11 +15,9 @@ if($property->load($property_id) == False) {
   exit();
 }
 
-$offset = isset($_GET['o']) ? $_GET['o'] : 0;
+$property->get_values();
 
-$property->get_values($offset);
-
-$last_text = isset($_GET['l']) ? $_GET['l'] : null;
+$last_value = "";
 
 while(($value = $property->next_value()) != NULL) {
   if($last_text != $value->text) {

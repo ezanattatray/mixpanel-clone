@@ -234,9 +234,9 @@ class mixpanel_property
     }
   }
 
-  public function get_values($offset=0)
+  public function get_values()
   {
-    $this->sql->sql_query("SELECT t1.text, t2.time FROM property_values AS t1 JOIN property_values_ts AS t2 ON t1.id = t2.value_id WHERE property_id = " . $this->sql->sanitize($this->id) . " ORDER BY t1.text, t2.time LIMIT 100 OFFSET " . $this->sql->sanitize($offset, 1));
+    $this->sql->sql_query("SELECT t1.text, t2.time FROM property_values AS t1 JOIN property_values_ts AS t2 ON t1.id = t2.value_id WHERE property_id = " . $this->sql->sanitize($this->id) . " ORDER BY t1.text, t2.time");
   }
 
   public function next_value()
