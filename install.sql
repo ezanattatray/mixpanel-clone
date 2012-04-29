@@ -26,6 +26,7 @@ PRIMARY KEY (id)
 
 CREATE TABLE property_values (
 id INT NOT NULL AUTO_INCREMENT,
+property_id INT NOT NULL REFERENCES properties(id),
 text VARCHAR(32) NOT NULL,
 PRIMARY KEY (id)
 );
